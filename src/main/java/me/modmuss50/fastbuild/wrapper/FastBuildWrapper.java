@@ -94,8 +94,9 @@ public class FastBuildWrapper {
             newArgs.add(arg);
         }
         newArgs.add("-wrapper_v1");
-        FastBuild build = new FastBuild();
-        build.start(newArgs);
+        RunFastBuild runFastBuild = new RunFastBuild();
+        runFastBuild.start(newArgs);
+
     }
 
     public static void log(String string){
