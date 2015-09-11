@@ -8,11 +8,6 @@
       "name": "commons-io-2.4.jar",
       "url": "http://central.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar",
       "copyToJar": true
-    },
-	    {
-      "name": "FastBuild-0.2.20.jar",
-      "url": "http://modmuss50.me:8080/job/FastBuild/20/artifact/build/libs/FastBuild-0.2.20.jar",
-      "copyToJar": false
     }
   ],
   "manifest": [

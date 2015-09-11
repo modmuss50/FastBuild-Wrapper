@@ -1,12 +1,8 @@
 package me.modmuss50.fastbuild.wrapper;
 
-import me.modmuss50.fastbuild.FastBuild;
 import org.apache.commons.io.FileUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -94,9 +90,22 @@ public class FastBuildWrapper {
             newArgs.add(arg);
         }
         newArgs.add("-wrapper_v1");
-        RunFastBuild runFastBuild = new RunFastBuild();
-        runFastBuild.start(newArgs);
 
+        Process proc = Runtime.getRuntime().exec("java -jar " + fastBuildJar.getAbsolutePath() + " " + newArgs.toString());
+        proc.waitFor();
+        // Then retreive the process output
+        InputStream in = proc.getInputStream();
+        InputStream err = proc.getErrorStream();
+
+        byte b[]=new byte[in.available()];
+        in.read(b,0,b.length);
+        System.out.println(new String(b));
+
+        byte c[]=new byte[err.available()];
+        err.read(c,0,c.length);
+        System.out.println(new String(c));
+
+        System.exit(0);
     }
 
     public static void log(String string){
