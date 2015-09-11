@@ -1,6 +1,6 @@
 {
   "projectName": "FastBuild-Wrapper",
-  "version": "0.0.%BUILD%",
+  "version": "1.%BUILD%",
   "bytecodeVersion": "1.8",
   "useForge": false,
   "libraries": [

@@ -71,6 +71,7 @@ public class FastBuildWrapper {
             fastBuildVersionInfoFile.delete();
         }
         addToClasspath(fastBuildJar);
+        args[args.length +1] = "-wrapper_v1";
         FastBuild.main(args);
     }
 
