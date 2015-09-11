@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FastBuildWrapper {
     public static File fastBuildCache;
@@ -48,13 +50,15 @@ public class FastBuildWrapper {
             while ((sCurrentLine = tempReader.readLine()) != null) {
                 tempText.append(sCurrentLine);
             }
-
+            tempReader.close();
 
             BufferedReader localReader = new BufferedReader(new FileReader(fastBuildVersionInfoFile));
             StringBuilder localText = new StringBuilder();
             while ((sCurrentLine = localReader.readLine()) != null) {
                 localText.append(sCurrentLine);
             }
+            localReader.close();
+
             if (!localText.toString().equals(tempText.toString())) {
                 fastBuildJar.delete();
                 log("Updating FastBuild.. " + localText.toString() + " > " + tempText.toString());
@@ -68,11 +72,16 @@ public class FastBuildWrapper {
             }
         }
         if(fastBuildVersionInfoTemp.exists()){
-            fastBuildVersionInfoFile.delete();
+            fastBuildVersionInfoTemp.delete();
         }
         addToClasspath(fastBuildJar);
-        args[args.length +1] = "-wrapper_v1";
-        FastBuild.main(args);
+        ArrayList<String> newArgs = new ArrayList<String>();
+        for(String arg : args){
+            newArgs.add(arg);
+        }
+        newArgs.add("-wrapper_v1");
+        FastBuild build = new FastBuild();
+        build.start(newArgs);
     }
 
     public static void log(String string){
@@ -83,7 +92,6 @@ public class FastBuildWrapper {
      * Credit to https://github.com/Slowpoke101/FTBLaunch/blob/master/src/main/java/net/ftb/workers/AuthlibDLWorker.java
      */
     public static boolean addToClasspath(File file) {
-        log("Loading external library " + file.getName() + " to classpath");
         try {
             if (file.exists()) {
                 addURL(file.toURI().toURL());

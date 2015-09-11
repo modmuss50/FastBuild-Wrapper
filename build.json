@@ -10,8 +10,8 @@
       "copyToJar": true
     },
 	    {
-      "name": "FastBuild-0.2.15.jar",
-      "url": "http://modmuss50.me:8080/job/FastBuild/15/artifact/build/libs/FastBuild-0.2.15.jar",
+      "name": "FastBuild-0.2.20.jar",
+      "url": "http://modmuss50.me:8080/job/FastBuild/20/artifact/build/libs/FastBuild-0.2.20.jar",
       "copyToJar": false
     }
   ],
