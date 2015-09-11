@@ -1,4 +1,4 @@
-package main.java.me.modmuss50.fastbuild.wrapper;
+package me.modmuss50.fastbuild.wrapper;
 
 import me.modmuss50.fastbuild.FastBuild;
 import org.apache.commons.io.FileUtils;
