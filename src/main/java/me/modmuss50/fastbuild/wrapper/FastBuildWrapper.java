@@ -11,13 +11,22 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class FastBuildWrapper {
     public static File fastBuildCache;
     public static File wrapperCache;
+    public static boolean isModmussJenkins = false;
 
     public static void main(String[] args) throws Throwable {
+        for (String arg : args) {
+            if(arg.startsWith("-wrapper_")){
+                System.out.println("Stared from wrapper " + arg.split("_")[1]);
+            }
+        }
+        String url = "http://modmuss50.me/fastbuild/";
+        if(isModmussJenkins){
+            url = url.replace("modmuss50.me", "localhost");
+        }
         File homeDir = new File(System.getProperty("user.home"));
         fastBuildCache = new File(homeDir, ".fastbuild");
         if (!fastBuildCache.exists()) {
@@ -38,11 +47,11 @@ public class FastBuildWrapper {
                 fastBuildVersionInfoFile.delete();
             }
             log("Downloading fastbuild...");
-            FileUtils.copyURLToFile(new URL("http://modmuss50.me/fastbuild/version.txt"), fastBuildVersionInfoFile);
-            FileUtils.copyURLToFile(new URL("http://modmuss50.me/fastbuild/FastBuild.jar"), fastBuildJar);
+            FileUtils.copyURLToFile(new URL(url + "version.txt"), fastBuildVersionInfoFile);
+            FileUtils.copyURLToFile(new URL(url + "FastBuild.jar"), fastBuildJar);
             log("Done...");
         } else {
-            FileUtils.copyURLToFile(new URL("http://modmuss50.me/fastbuild/version.txt"), fastBuildVersionInfoTemp);
+            FileUtils.copyURLToFile(new URL(url + "version.txt"), fastBuildVersionInfoTemp);
 
             BufferedReader tempReader = new BufferedReader(new FileReader(fastBuildVersionInfoTemp));
             String sCurrentLine;
@@ -62,7 +71,7 @@ public class FastBuildWrapper {
             if (!localText.toString().equals(tempText.toString())) {
                 fastBuildJar.delete();
                 log("Updating FastBuild.. " + localText.toString() + " > " + tempText.toString());
-                FileUtils.copyURLToFile(new URL("http://modmuss50.me/fastbuild/FastBuild.jar"), fastBuildJar);
+                FileUtils.copyURLToFile(new URL(url + "FastBuild.jar"), fastBuildJar);
 
                 fastBuildVersionInfoFile.delete();
                 FileUtils.moveFile(fastBuildVersionInfoTemp, fastBuildVersionInfoFile);
@@ -70,6 +79,10 @@ public class FastBuildWrapper {
             } else {
                 log("Fastbuild is up to date");
             }
+        }
+        if (!fastBuildJar.exists()){
+            log("Fastbuid jar was not found!!");
+            fastBuildVersionInfoFile.delete();
         }
         if(fastBuildVersionInfoTemp.exists()){
             fastBuildVersionInfoTemp.delete();
