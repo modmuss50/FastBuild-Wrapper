@@ -1,0 +1,23 @@
+{
+  "projectName": "FastBuild-Wrapper",
+  "version": "0.0.%BUILD%",
+  "bytecodeVersion": "1.8",
+  "useForge": false,
+  "libraries": [
+    {
+      "name": "commons-io-2.4.jar",
+      "url": "http://central.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar",
+      "copyToJar": true
+    },
+	    {
+      "name": "FastBuild-0.2.15.jar",
+      "url": "http://modmuss50.me:8080/job/FastBuild/15/artifact/build/libs/FastBuild-0.2.15.jar",
+      "copyToJar": false
+    }
+  ],
+  "manifest": [
+    "Manifest-Version: 1.0",
+    "Main-Class: me.modmuss50.fastbuild.wrapper.FastBuildWrapper"
+  ],
+  "srcJar": true
+}
