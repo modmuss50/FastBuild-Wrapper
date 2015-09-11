@@ -87,7 +87,7 @@ public class FastBuildWrapper {
         addToClasspath(fastBuildJar);
         ArrayList<String> newArgs = new ArrayList<String>();
         for(String arg : args){
-            newArgs.add(arg);
+            newArgs.add(arg + " ");
         }
         newArgs.add("-wrapper_v1");
 
