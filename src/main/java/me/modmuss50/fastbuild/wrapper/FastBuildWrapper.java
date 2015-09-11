@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -124,18 +125,19 @@ public class FastBuildWrapper {
     /**
      * Credit to https://github.com/Slowpoke101/FTBLaunch/blob/master/src/main/java/net/ftb/workers/AuthlibDLWorker.java
      */
-    public static void addURL(URL u) throws IOException {
+    public static void addURL(URL u)  {
         URLClassLoader sysloader = (URLClassLoader) FastBuildWrapper.class.getClass().getClassLoader();
         Class sysclass = URLClassLoader.class;
         try {
             Method method = sysclass.getDeclaredMethod("addURL", URL.class);
             method.setAccessible(true);
             method.invoke(sysloader, u);
-        } catch (Throwable t) {
-            if (t.getMessage() != null) {
-                log(t.getMessage());
-            }
-            throw new IOException("Error, could not add URL to system classloader");
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 }
