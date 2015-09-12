@@ -16,8 +16,8 @@ public class FastBuildWrapper {
 
     public static void main(String[] args) throws Throwable {
         for (String arg : args) {
-            if(arg.startsWith("-wrapper_")){
-                System.out.println("Stared from wrapper " + arg.split("_")[1]);
+            if(arg.startsWith("-modmuss50Jenkins")){
+                isModmussJenkins = true;
             }
         }
         String url = "http://modmuss50.me/fastbuild/";
