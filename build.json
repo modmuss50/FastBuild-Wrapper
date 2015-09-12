@@ -14,5 +14,8 @@
     "Manifest-Version: 1.0",
     "Main-Class: me.modmuss50.fastbuild.wrapper.FastBuildWrapper"
   ],
+    "versionStrings": [
+    "%VERSION%"
+  ],
   "srcJar": true
 }
