@@ -85,13 +85,16 @@ public class FastBuildWrapper {
             fastBuildVersionInfoTemp.delete();
         }
         ArrayList<String> newArgs = new ArrayList<String>();
+        newArgs.add("java");
+        newArgs.add("-jar");
+        newArgs.add(fastBuildJar.getAbsolutePath());
         for(String arg : args){
             newArgs.add(arg + " ");
         }
         newArgs.add("-wrapper_v1");
 
         log("Starting fastbuild proccess");
-        ProcessBuilder pb = new ProcessBuilder("java", "-jar", fastBuildJar.getAbsolutePath(), newArgs.toString());
+        ProcessBuilder pb = new ProcessBuilder(newArgs);
         Process p = pb.start();
         BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
         String s = "";
