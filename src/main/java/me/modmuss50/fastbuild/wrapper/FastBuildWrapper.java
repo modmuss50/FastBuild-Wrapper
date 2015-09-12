@@ -84,26 +84,22 @@ public class FastBuildWrapper {
         if(fastBuildVersionInfoTemp.exists()){
             fastBuildVersionInfoTemp.delete();
         }
-        addToClasspath(fastBuildJar);
         ArrayList<String> newArgs = new ArrayList<String>();
         for(String arg : args){
             newArgs.add(arg + " ");
         }
         newArgs.add("-wrapper_v1");
 
-        Process proc = Runtime.getRuntime().exec("java -jar " + fastBuildJar.getAbsolutePath() + " " + newArgs.toString());
-        proc.waitFor();
-        // Then retreive the process output
-        InputStream in = proc.getInputStream();
-        InputStream err = proc.getErrorStream();
-
-        byte b[]=new byte[in.available()];
-        in.read(b,0,b.length);
-        System.out.println(new String(b));
-
-        byte c[]=new byte[err.available()];
-        err.read(c,0,c.length);
-        System.out.println(new String(c));
+        log("Starting fastbuild proccess");
+        ProcessBuilder pb = new ProcessBuilder("java", "-jar", fastBuildJar.getAbsolutePath(), newArgs.toString());
+        Process p = pb.start();
+        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String s = "";
+        while((s = in.readLine()) != null){
+            System.out.println(s);
+        }
+        int status = p.waitFor();
+        System.out.println("Exited with status: " + status);
 
         System.exit(0);
     }
@@ -112,42 +108,4 @@ public class FastBuildWrapper {
         System.out.println("FASTBUILD-WRAPPER: " + string);
     }
 
-    /**
-     * Credit to https://github.com/Slowpoke101/FTBLaunch/blob/master/src/main/java/net/ftb/workers/AuthlibDLWorker.java
-     */
-    public static boolean addToClasspath(File file) {
-        try {
-            if (file.exists()) {
-                addURL(file.toURI().toURL());
-            } else {
-                log("Error loading jar");
-            }
-        } catch (Throwable t) {
-            if (t.getMessage() != null) {
-                log(t.getMessage());
-            }
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Credit to https://github.com/Slowpoke101/FTBLaunch/blob/master/src/main/java/net/ftb/workers/AuthlibDLWorker.java
-     */
-    public static void addURL(URL u)  {
-        URLClassLoader sysloader = (URLClassLoader) FastBuildWrapper.class.getClass().getClassLoader();
-        Class sysclass = URLClassLoader.class;
-        try {
-            Method method = sysclass.getDeclaredMethod("addURL", URL.class);
-            method.setAccessible(true);
-            method.invoke(sysloader, u);
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
 }
